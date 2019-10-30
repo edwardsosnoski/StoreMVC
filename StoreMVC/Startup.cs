@@ -10,6 +10,8 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using StoreMVC.DAL;
+using StoreMVC.StoreServices;
 
 namespace StoreMVC
 {
@@ -34,6 +36,8 @@ namespace StoreMVC
             var appConfig = new StoreMVCConfiguration();
             config.Bind("StoreMVCConfiguration", appConfig);
             services.AddSingleton(appConfig);
+            services.AddSingleton<IInventoryService, InventoryService>();
+            services.AddSingleton<IInventoryStore, InventoryStore>();
             services.Configure<CookiePolicyOptions>(options =>
             {
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.

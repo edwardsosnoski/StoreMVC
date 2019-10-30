@@ -8,6 +8,6 @@ namespace StoreMVC
 
     public class Database
     {
-        public string ConnetionString { get; set; }
+        public string ConnectionString { get; set; }
     }
 }
