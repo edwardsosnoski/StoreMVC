@@ -1,0 +1,32 @@
+﻿@model StoreMVC.Models.StoreViewModel
+
+@{
+    ViewData["Title"] = "SelectProductToUpdate";
+}
+
+<h1>SelectProductToUpdate</h1>
+
+<table>
+    <thead>
+        <tr>
+            @*<th>Product ID</th>*@
+            <th>Product Name</th>
+
+        </tr>
+    </thead>
+    <tbody>
+
+        @foreach (var product in Model.ListOfProducts)
+        {
+            <tr>
+                @*<td>@product.ProductID</td>*@
+                <td><a asp-controller="Store" asp-action="UpdateProductInfo" asp-route-id="@product.ProductID">@product.ProductName</a></td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

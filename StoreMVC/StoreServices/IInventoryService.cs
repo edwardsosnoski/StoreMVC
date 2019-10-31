@@ -12,6 +12,10 @@ namespace StoreMVC.StoreServices
         StoreViewModel GetAllProducts();
         StoreViewModel AddProduct(AddProductViewModel userProduct);
         StoreViewModel DeleteProduct(int ID);
+        StoreProduct GetProductById(int ID);
+        ProductDetailsViewModel GetProductDetails(int ID);
+        ProductDetailsViewModel UpdateProduct(UpdateProductViewModel userUpdates);
+        
     }
 
     public class InventoryService: IInventoryService
@@ -26,21 +30,6 @@ namespace StoreMVC.StoreServices
         public StoreViewModel GetAllProducts()
         {
             var dalStoreProducts = _inventoryStore.SelectAllProducts();
-
-            //var products = new List<StoreProduct>();
-
-            //foreach (var dalStoreProduct in dalStoreProducts)
-            //{
-            //    var storeProduct = new StoreProduct();
-            //    storeProduct.ProductID = dalStoreProduct.ProductID;
-            //    storeProduct.ProductName = dalStoreProduct.ProductName;
-            //    storeProduct.Price = dalStoreProduct.Price;
-            //    storeProduct.Quantity = dalStoreProduct.Quantity;
-            //    products.Add(storeProduct);
-            //}
-
-            //var storeViewModel = new StoreViewModel();
-            //storeViewModel.ListOfProducts = products;
 
             return MapDalToProduct(dalStoreProducts);
         }
@@ -84,6 +73,49 @@ namespace StoreMVC.StoreServices
             storeViewModel.ListOfProducts = products;
 
             return storeViewModel;
+        }
+
+        public StoreProduct GetProductById(int ID)
+        {
+            var dalProduct = _inventoryStore.SelectProductID(ID);
+            var storeProduct = new StoreProduct();
+            storeProduct.ProductID = dalProduct.ProductID;
+            storeProduct.ProductName = dalProduct.ProductName;
+            storeProduct.Quantity = dalProduct.Quantity;
+            storeProduct.Price = dalProduct.Price;
+
+            return storeProduct;
+        }
+
+        public ProductDetailsViewModel GetProductDetails(int ID)
+        {
+            var dalProduct = _inventoryStore.SelectProductID(ID);
+            var productDetails = new ProductDetailsViewModel();
+            productDetails.ProductID = dalProduct.ProductID;
+            productDetails.ProductName = dalProduct.ProductName;
+            productDetails.Quantity = dalProduct.Quantity;
+            productDetails.Price = dalProduct.Price;
+
+            return productDetails;
+        }
+
+        public ProductDetailsViewModel UpdateProduct(UpdateProductViewModel userModel)
+        {
+            var dalModel = new StoreDALModel();
+            dalModel.ProductID = userModel.ProductID;
+            dalModel.ProductName = userModel.ProductName;
+            dalModel.Quantity = userModel.Quantity;
+            dalModel.Price = userModel.Price;
+            _inventoryStore.UpdateProduct(dalModel);
+
+            var productDetails = new ProductDetailsViewModel();
+            productDetails.ProductID = dalModel.ProductID;
+            productDetails.ProductName = dalModel.ProductName;
+            productDetails.Quantity = dalModel.Quantity;
+            productDetails.Price = dalModel.Price;
+
+            return productDetails;
+
         }
     }
 }
