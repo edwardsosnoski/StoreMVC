@@ -4,7 +4,8 @@
     ViewData["Title"] = "GetAllStoreProducts";
 }
 
-<h1>GetAllStoreProducts</h1>
+<h1>All the product's in the Weed Shop!</h1>
+<h1>Click on a product to view more information</h1>
 
 <table>
     <thead>
@@ -18,10 +19,11 @@
 
         @foreach (var product in Model.ListOfProducts)
         {
-            <tr>
-                @*<td>@product.ProductID</td>*@
-                <td><a asp-controller="Store" asp-action="ProductDetails" asp-route-id="@product.ProductID">@product.ProductName</a></td>
-            </tr>
+        <tr>
+            @*<td>@product.ProductID</td>*@
+            <td><a asp-controller="Store" asp-action="ProductDetails" asp-route-id="@product.ProductID">@product.ProductName</a></td>
+            <td><a asp-controller="Store" asp-action="Add To Cart" asp-route-id="@product.ProductID">Add to cart</a></td>
+        </tr>
         }
     </tbody>
 </table>
