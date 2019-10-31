@@ -9,7 +9,10 @@ namespace StoreMVC.DAL
     public interface ICartStore
     {
         IEnumerable<CartDALModel> SelectAllInCart();
-        bool AddToCart(StoreDALModel dalModel);
+        CartDALModel SelectFromCartById(int id);
+        bool InsertIntoCart(CartDALModel dalModel);
+        bool DeleteFromCart(CartDALModel dalModel);
+        bool UpdateQuantityInCart(CartDALModel dalModel);
     }
 
     public class CartStore : ICartStore
@@ -31,7 +34,20 @@ namespace StoreMVC.DAL
             }
         }
 
-        public bool AddToCart(StoreDALModel dalModel)
+        public CartDALModel SelectFromCartById(int id)
+        {
+            var sql = @"SELECT * FROM cart
+                        WHERE ProductID = @ProductID";
+
+            using (var connection = new SqlConnection(_config.ConnectionString))
+            {
+                var result = connection.QueryFirstOrDefault<CartDALModel>(sql, new { ProductID = id });
+
+                return result;
+            }
+        }
+
+        public bool InsertIntoCart(CartDALModel dalModel)
         {
             var sql = $@"INSERT INTO cart (ProductID, ProductName, Quantity, Price)
                         VALUES (
@@ -43,12 +59,42 @@ namespace StoreMVC.DAL
 
             using (var connection = new SqlConnection(_config.ConnectionString))
             {
-                int result = 0;
+                var result = connection.Execute(sql, dalModel);
 
-                if(dalModel.Quantity > 0)
+                if (result == 1)
                 {
-                    result = connection.Execute(sql, dalModel);
+                    return true;
                 }
+
+                return false;
+            }
+        }
+
+        public bool DeleteFromCart(CartDALModel dalModel)
+        {
+            var sql = @"DELETE FROM cart
+                        WHERE ProductID = @ProductID";
+
+            using (var connection = new SqlConnection(_config.ConnectionString))
+            {
+                var result = connection.Execute(sql, dalModel);
+                if (result == 1)
+                {
+                    return true;
+                }
+
+                return false;
+            }
+        }
+
+        public bool UpdateQuantityInCart(CartDALModel dalModel)
+        {
+            var sql = @"UPDATE cart
+                        SET Quantity = @Quantity";
+
+            using (var connection = new SqlConnection(_config.ConnectionString))
+            {
+                var result = connection.Execute(sql, dalModel);
 
                 if (result == 1)
                 {
