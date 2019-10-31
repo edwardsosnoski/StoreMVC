@@ -111,5 +111,10 @@ namespace StoreMVC.Controllers
                 return View("ProductDetails", results);
             }
         }
+
+        public IActionResult AddToCart(int ID)
+        {
+            return View();
+        }
     }
 }
