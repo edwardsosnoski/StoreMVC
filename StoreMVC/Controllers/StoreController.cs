@@ -35,6 +35,13 @@ namespace StoreMVC.Controllers
             return View();
         }
 
+        public IActionResult ProductDetails(int ID)
+        {
+            var productDetails = _inventoryService.GetProductDetails(ID);
+
+            return View(productDetails);
+        }
+
         public IActionResult AddProductResult(AddProductViewModel userProduct)
         {
             var productViewModel = _inventoryService.AddProduct(userProduct);
@@ -68,6 +75,40 @@ namespace StoreMVC.Controllers
             else
             {
                 return View("GetAllStoreProducts", productViewModel);
+            }
+        }
+
+        public IActionResult SelectProductToUpdate()
+        {
+            var storeViewModel = _inventoryService.GetAllProducts();
+            return View(storeViewModel);
+        }
+
+        public IActionResult UpdateProductInfo(int ID)
+        {
+            var oldProduct = _inventoryService.GetProductById(ID);
+            var updatedProduct = new UpdateProductViewModel();
+            updatedProduct.ProductID = oldProduct.ProductID;
+            updatedProduct.ProductName = oldProduct.ProductName;
+            updatedProduct.Quantity = oldProduct.Quantity;
+            updatedProduct.Price = oldProduct.Price;
+
+            return View(updatedProduct);
+        }
+
+        public IActionResult UpdateResult(UpdateProductViewModel userEdits)
+        {
+            var results = _inventoryService.UpdateProduct(userEdits);
+
+            if (!ModelState.IsValid)
+            {
+                return View("Error", new ErrorViewModel
+                { ErrorMessage = "ERROR product was not added correctly" });
+            }
+
+            else
+            {
+                return View("ProductDetails", results);
             }
         }
     }

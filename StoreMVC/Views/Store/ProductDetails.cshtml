@@ -1,0 +1,24 @@
+﻿@model StoreMVC.Models.ProductDetailsViewModel
+
+    <div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Product ID</th>
+                    <th>Product Name</th>
+                    <th>Quantity On Hand</th>
+                    <th>Price Per Gram</th>
+                    
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>@Model.ProductID</td>
+                    <td>@Model.ProductName</td>
+                    <td>@Model.Quantity</td>
+                    <td>@Model.Price</td>
+                    
+                </tr>
+            </tbody>
+        </table>
+    </div>
