@@ -14,7 +14,6 @@ namespace StoreMVC.DAL
         bool InsertNewProduct(StoreDALModel dalModel);
         StoreDALModel SelectProductID(int ID);
         bool DeleteProduct(StoreDALModel dalModel);
-        bool UpdateProduct(StoreDALModel dalModel);
     }
 
     public class InventoryStore : IInventoryStore
@@ -85,28 +84,6 @@ namespace StoreMVC.DAL
                 var result = connection.QueryFirstOrDefault<StoreDALModel>(sql, new { ProductID = ID });
 
                 return result;
-            }
-        }
-
-        public bool UpdateProduct(StoreDALModel dalModel)
-        {
-
-            var sql = @"UPDATE inventory SET ProductName = @ProductName,  
-            Quantity = @Quantity, Price = @Price
-            WHERE ProductID = @ProductID";
-
-            using (var connection = new SqlConnection(_config.ConnectionString))
-            {
-                var result = connection.Execute(sql, dalModel);
-
-                if (result == 1)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
             }
         }
     }
