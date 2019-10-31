@@ -38,7 +38,8 @@ namespace StoreMVC.DAL
                                 @{nameof(dalModel.ProductID)},
                                 @{nameof(dalModel.ProductName)},
                                 @{nameof(dalModel.Quantity)},
-                                @{nameof(dalModel.Price)}";
+                                @{nameof(dalModel.Price)}
+                        )";
 
             using (var connection = new SqlConnection(_config.ConnectionString))
             {
