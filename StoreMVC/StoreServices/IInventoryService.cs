@@ -10,6 +10,8 @@ namespace StoreMVC.StoreServices
     public interface IInventoryService
     {
         StoreViewModel GetAllProducts();
+        StoreViewModel AddProduct(AddProductViewModel userProduct);
+        StoreViewModel DeleteProduct(int ID);
     }
 
     public class InventoryService: IInventoryService
@@ -25,9 +27,50 @@ namespace StoreMVC.StoreServices
         {
             var dalStoreProducts = _inventoryStore.SelectAllProducts();
 
+            //var products = new List<StoreProduct>();
+
+            //foreach (var dalStoreProduct in dalStoreProducts)
+            //{
+            //    var storeProduct = new StoreProduct();
+            //    storeProduct.ProductID = dalStoreProduct.ProductID;
+            //    storeProduct.ProductName = dalStoreProduct.ProductName;
+            //    storeProduct.Price = dalStoreProduct.Price;
+            //    storeProduct.Quantity = dalStoreProduct.Quantity;
+            //    products.Add(storeProduct);
+            //}
+
+            //var storeViewModel = new StoreViewModel();
+            //storeViewModel.ListOfProducts = products;
+
+            return MapDalToProduct(dalStoreProducts);
+        }
+
+        public StoreViewModel AddProduct(AddProductViewModel userProduct)
+        {
+            var dalModel = new StoreDALModel();
+            dalModel.ProductName = userProduct.ProductName;
+            dalModel.Quantity = userProduct.Quantity;
+            dalModel.Price = userProduct.Price;
+            _inventoryStore.InsertNewProduct(dalModel);
+            var dalProducts = _inventoryStore.SelectAllProducts();
+            return MapDalToProduct(dalProducts);
+
+        }
+
+        public StoreViewModel DeleteProduct(int ID)
+        {
+            var dalProduct = _inventoryStore.SelectProductID(ID);
+            _inventoryStore.DeleteProduct(dalProduct);
+            var dalProducts = _inventoryStore.SelectAllProducts();
+
+            return MapDalToProduct(dalProducts);
+        }
+
+        private StoreViewModel MapDalToProduct(IEnumerable<StoreDALModel> dalModel)
+        {
             var products = new List<StoreProduct>();
 
-            foreach (var dalStoreProduct in dalStoreProducts)
+            foreach (var dalStoreProduct in dalModel)
             {
                 var storeProduct = new StoreProduct();
                 storeProduct.ProductID = dalStoreProduct.ProductID;
