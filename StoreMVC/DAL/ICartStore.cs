@@ -9,6 +9,7 @@ namespace StoreMVC.DAL
     public interface ICartStore
     {
         IEnumerable<CartDALModel> SelectAllInCart();
+        bool AddToCart(StoreDALModel dalModel);
     }
 
     public class CartStore : ICartStore
@@ -27,6 +28,34 @@ namespace StoreMVC.DAL
             {
                 var result = connection.Query<CartDALModel>(sql) ?? new List<CartDALModel>();
                 return result;
+            }
+        }
+
+        public bool AddToCart(StoreDALModel dalModel)
+        {
+            var sql = $@"INSERT INTO cart (ProductID, ProductName, Quantity, Price)
+                        VALUES (
+                                @{nameof(dalModel.ProductID)},
+                                @{nameof(dalModel.ProductName)},
+                                @{nameof(dalModel.Quantity)},
+                                @{nameof(dalModel.Price)}
+                        )";
+
+            using (var connection = new SqlConnection(_config.ConnectionString))
+            {
+                int result = 0;
+
+                if(dalModel.Quantity > 0)
+                {
+                    result = connection.Execute(sql, dalModel);
+                }
+
+                if (result == 1)
+                {
+                    return true;
+                }
+
+                return false;
             }
         }
     }
