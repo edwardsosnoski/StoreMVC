@@ -31,7 +31,7 @@ namespace StoreMVC
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json", false, true)
                 .AddEnvironmentVariables()
-                .AddUserSecrets<StoreMVCConfiguration>()
+                //.AddUserSecrets<StoreMVCConfiguration>()
                 .Build();
 
             var appConfig = new StoreMVCConfiguration();
@@ -40,6 +40,7 @@ namespace StoreMVC
             services.AddSingleton<IInventoryService, InventoryService>();
             services.AddSingleton<IInventoryStore, InventoryStore>();
             services.AddSingleton<ICartStore, CartStore>();
+            services.AddSingleton<IShoppingCartService, ShoppingCartService>();
             services.Configure<CookiePolicyOptions>(options =>
             {
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.

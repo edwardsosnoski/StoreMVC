@@ -7,5 +7,6 @@ namespace StoreMVC.Models
 {
     public class ShoppingCartViewModel
     {
+        public IEnumerable<StoreProduct> ListOfShoppingCartProducts { get; set; }
     }
 }

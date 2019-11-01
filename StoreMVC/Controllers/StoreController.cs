@@ -13,10 +13,12 @@ namespace StoreMVC.Controllers
     public class StoreController : Controller
     {
         private readonly IInventoryService _inventoryService;
+        private readonly IShoppingCartService _shoppingCartService;
 
-        public StoreController(IInventoryService inventoryService)
+        public StoreController(IInventoryService inventoryService, IShoppingCartService shoppingCartService)
         {
             _inventoryService = inventoryService;
+            _shoppingCartService = shoppingCartService;
         }
 
         public IActionResult Index()
@@ -114,7 +116,10 @@ namespace StoreMVC.Controllers
 
         public IActionResult AddToCart(int ID)
         {
-            return View();
+            var result = _shoppingCartService.AddToCart(ID);
+            return View(result);
         }
+
+       
     }
 }
