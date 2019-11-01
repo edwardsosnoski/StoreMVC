@@ -22,7 +22,7 @@
         <tr>
             @*<td>@product.ProductID</td>*@
             <td><a asp-controller="Store" asp-action="ProductDetails" asp-route-id="@product.ProductID">@product.ProductName</a></td>
-            <td><a asp-controller="Store" asp-action="Add To Cart" asp-route-id="@product.ProductID">Add to cart</a></td>
+            <td><a asp-controller="Store" asp-action="AddToCart" asp-route-id="@product.ProductID">Add to cart</a></td>
         </tr>
         }
     </tbody>

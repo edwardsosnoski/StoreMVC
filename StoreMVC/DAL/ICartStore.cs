@@ -10,7 +10,7 @@ namespace StoreMVC.DAL
     {
         IEnumerable<CartDALModel> SelectAllInCart();
         CartDALModel SelectFromCartById(int id);
-        bool InsertIntoCart(CartDALModel dalModel);
+        bool InsertIntoCart(StoreDALModel dalModel);
         bool DeleteFromCart(CartDALModel dalModel);
         bool UpdateQuantityInCart(CartDALModel dalModel);
     }
@@ -47,7 +47,7 @@ namespace StoreMVC.DAL
             }
         }
 
-        public bool InsertIntoCart(CartDALModel dalModel)
+        public bool InsertIntoCart(StoreDALModel dalModel)
         {
             var sql = $@"INSERT INTO cart (ProductID, ProductName, Quantity, Price)
                         VALUES (
