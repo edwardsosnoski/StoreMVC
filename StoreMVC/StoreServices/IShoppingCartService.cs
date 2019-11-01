@@ -12,7 +12,7 @@ namespace StoreMVC.StoreServices
         ShoppingCartViewModel AddToCart(int ID);
     }
 
-    public class ShoppingCartService:IShoppingCartService
+    public class ShoppingCartService : IShoppingCartService
     {
         private readonly ICartStore _cartStore;
         private readonly IInventoryStore _inventoryStore;
@@ -25,11 +25,22 @@ namespace StoreMVC.StoreServices
 
         public ShoppingCartViewModel AddToCart(int ID)
         {
-            var cartDalModel = _inventoryStore.SelectProductID(ID);
-            _cartStore.InsertIntoCart(cartDalModel);
+            var productDalModel = _inventoryStore.SelectProductID(ID);
+            var cartDalModel = _cartStore.SelectFromCartById(ID);
+
+            if (cartDalModel != null)
+            {
+                cartDalModel.Quantity++;
+                _cartStore.UpdateQuantityInCart(cartDalModel);
+            }
+            else
+            {
+                productDalModel.Quantity = 1;
+                _cartStore.InsertIntoCart(productDalModel);
+            }
 
             var dalModels = _cartStore.SelectAllInCart();
-            var products = new  List<StoreProduct>();
+            var products = new List<StoreProduct>();
 
             foreach (var dalModel in dalModels)
             {
