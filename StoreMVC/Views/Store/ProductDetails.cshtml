@@ -18,8 +18,7 @@
                     <td>@Model.ProductName</td>
                     <td>@Model.Quantity</td>
                     <td>@Model.Price</td>
-                    <td><a>asp-controller="Store" asp-action="AddToCart" asp-route-id="@Model.ProductID">Add</a></td>
-                    
+                    <td><a asp-controller="Store" asp-action="AddToCart" asp-route-id="@Model.ProductID">Add</a></td>
                 </tr>
             </tbody>
         </table>
