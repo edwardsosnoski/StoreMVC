@@ -8,6 +8,7 @@
                     <th>Product Name</th>
                     <th>Quantity On Hand</th>
                     <th>Price Per Gram</th>
+                    <th>Add to Cart?</th>
                     
                 </tr>
             </thead>
@@ -17,6 +18,7 @@
                     <td>@Model.ProductName</td>
                     <td>@Model.Quantity</td>
                     <td>@Model.Price</td>
+                    <td><a>asp-controller="Store" asp-action="AddToCart" asp-route-id="@Model.ProductID">Add</a></td>
                     
                 </tr>
             </tbody>

@@ -120,6 +120,10 @@ namespace StoreMVC.Controllers
             return View(result);
         }
 
-       
+       public IActionResult ViewShoppingCart()
+        {
+            var shoppingCartItems = _shoppingCartService.ViewCart();
+            return View(shoppingCartItems);
+        }
     }
 }
