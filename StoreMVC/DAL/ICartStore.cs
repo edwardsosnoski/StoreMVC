@@ -13,6 +13,7 @@ namespace StoreMVC.DAL
         bool InsertIntoCart(StoreDALModel dalModel);
         bool DeleteFromCart(CartDALModel dalModel);
         bool UpdateQuantityInCart(CartDALModel dalModel);
+        bool UpdateOtherProperties(CartDALModel dalModel);
     }
 
     public class CartStore : ICartStore
@@ -91,6 +92,24 @@ namespace StoreMVC.DAL
         {
             var sql = @"UPDATE cart
                         SET Quantity = @Quantity";
+
+            using (var connection = new SqlConnection(_config.ConnectionString))
+            {
+                var result = connection.Execute(sql, dalModel);
+
+                if (result == 1)
+                {
+                    return true;
+                }
+
+                return false;
+            }
+        }
+
+        public bool UpdateOtherProperties(CartDALModel dalModel)
+        {
+            var sql = @"UPDATE cart SET ProductName = @ProductName, Quantity = @Quantity,
+             Price = @Price";
 
             using (var connection = new SqlConnection(_config.ConnectionString))
             {

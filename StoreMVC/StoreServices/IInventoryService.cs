@@ -21,10 +21,12 @@ namespace StoreMVC.StoreServices
     public class InventoryService: IInventoryService
     {
         private readonly IInventoryStore _inventoryStore;
+        private readonly ICartStore _cartStore;
 
-        public InventoryService(IInventoryStore inventoryStore)
+        public InventoryService(IInventoryStore inventoryStore, ICartStore cartStore)
         {
             _inventoryStore = inventoryStore;
+            _cartStore = cartStore;
         }
 
         public StoreViewModel GetAllProducts()
@@ -51,7 +53,8 @@ namespace StoreMVC.StoreServices
             var dalProduct = _inventoryStore.SelectProductID(ID);
             _inventoryStore.DeleteProduct(dalProduct);
             var dalProducts = _inventoryStore.SelectAllProducts();
-
+            var cartDalProduct = _cartStore.SelectFromCartById(ID);
+            _cartStore.DeleteFromCart(cartDalProduct);
             return MapDalToProduct(dalProducts);
         }
 
@@ -107,6 +110,13 @@ namespace StoreMVC.StoreServices
             dalModel.Quantity = userModel.Quantity;
             dalModel.Price = userModel.Price;
             _inventoryStore.UpdateProduct(dalModel);
+
+            var cartDAL = new CartDALModel();
+            cartDAL.ProductID = userModel.ProductID;
+            cartDAL.ProductName = userModel.ProductName;
+            cartDAL.Quantity = userModel.Quantity;
+            cartDAL.Price = userModel.Price;
+            _cartStore.UpdateOtherProperties(cartDAL);
 
             var productDetails = new ProductDetailsViewModel();
             productDetails.ProductID = dalModel.ProductID;

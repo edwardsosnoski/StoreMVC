@@ -10,6 +10,7 @@ namespace StoreMVC.StoreServices
     public interface IShoppingCartService
     {
         ShoppingCartViewModel AddToCart(int ID);
+        ShoppingCartViewModel ViewCart();
     }
 
     public class ShoppingCartService : IShoppingCartService
@@ -39,6 +40,27 @@ namespace StoreMVC.StoreServices
                 _cartStore.InsertIntoCart(productDalModel);
             }
 
+            var dalModels = _cartStore.SelectAllInCart();
+            var products = new List<StoreProduct>();
+
+            foreach (var dalModel in dalModels)
+            {
+                var storeCartProduct = new StoreProduct();
+                storeCartProduct.ProductID = dalModel.ProductID;
+                storeCartProduct.ProductName = dalModel.ProductName;
+                storeCartProduct.Quantity = dalModel.Quantity;
+                storeCartProduct.Price = dalModel.Price;
+                products.Add(storeCartProduct);
+            }
+
+            var shoppingCartViewModel = new ShoppingCartViewModel();
+            shoppingCartViewModel.ListOfShoppingCartProducts = products;
+
+            return shoppingCartViewModel;
+        }
+
+        public ShoppingCartViewModel ViewCart()
+        {
             var dalModels = _cartStore.SelectAllInCart();
             var products = new List<StoreProduct>();
 
