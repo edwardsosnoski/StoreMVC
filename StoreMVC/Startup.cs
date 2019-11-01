@@ -31,7 +31,7 @@ namespace StoreMVC
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json", false, true)
                 .AddEnvironmentVariables()
-                //.AddUserSecrets<StoreMVCConfiguration>()
+                .AddUserSecrets<StoreMVCConfiguration>()
                 .Build();
 
             var appConfig = new StoreMVCConfiguration();
